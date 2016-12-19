@@ -1,17 +1,29 @@
-﻿@model IEnumerable<GitWebApp.Models.Post>
+﻿@model GitWebApp.ViewModels.PostsViewModel
 
 <div class="row">
-    @foreach (var post in Model)
-    {
-        <h3>
-            <a asp-action="SinglePost"
-               asp-controller="Blog"
-               asp-route-year="@post.PublishDate.Year"
-               asp-route-month="@post.PublishDate.Month"
-               asp-route-day="@post.PublishDate.Day"
-               asp-route-title="@post.Title.ToLower().Replace(' ', '-')">@post.Title</a>
-        </h3>
-        <div>@Html.Raw(post.Content)</div>
-        <hr/>
-    }
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-8">
+        @foreach (var post in Model.Posts)
+        {
+            <h3>
+                <a asp-action="SinglePost"
+                   asp-controller="Blog"
+                   asp-route-year="@post.PublishDate.Year"
+                   asp-route-month="@post.PublishDate.Month"
+                   asp-route-day="@post.PublishDate.Day"
+                   asp-route-title="@post.Title.ToLower().Replace(' ', '-')">@post.Title</a>
+            </h3>
+            <div>@Html.Raw(post.Content)</div>
+            <hr />
+        }    
+    </div>
+    <div class="col-md-3">
+        <ul>
+            <li>Posts founded: <b>@Model.Amount</b> </li>
+        </ul>
+    </div>
+
+
+    
 </div>

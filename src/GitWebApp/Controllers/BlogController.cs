@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GitWebApp.Data;
+using GitWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
@@ -27,7 +28,13 @@ namespace GitWebApp.Controllers
         public IActionResult Index()
         {
             var posts = _posts.GetAll().OrderByDescending(p => p.PublishDate);
-            return View(posts);
+            var vm = new PostsViewModel
+            {
+                Posts = posts.ToArray(),
+                Amount = posts.Count()
+            };
+
+            return View(vm);
         }
 
         [Route("[controller]/{year}/{month}/{day}/{title}")]

@@ -2,12 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GitWebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IHostingEnvironment _environment;
+
+        public HomeController(IHostingEnvironment environment)
+        {
+            _environment = environment;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -15,7 +23,7 @@ namespace GitWebApp.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["WebRootPath"] = _environment.WebRootPath;
 
             return View();
         }
