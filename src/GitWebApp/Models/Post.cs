@@ -14,20 +14,28 @@ namespace GitWebApp.Models
         public DateTime PublishDate { get; private set; }
         public string Content { get; private set; }
 
-        public static Post Parse(string fileData)
+        public static Post Parse(string fileData, out string msg)
         {
+            msg = string.Empty;
             var lines = fileData.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             var metadata = new Dictionary<string, string>();
 
-            if (lines.Any() && lines[0] != "---")
+            if (lines.Length == 0)
             {
+                msg = "There are no lines in file.";
+                return null;
+            }
+
+            if (!lines[0].Contains("---"))
+            {
+                msg = $@"First line is not equal to --- (it is {lines[0]}. All: {lines.ToArray()})";
                 return null;
             }
 
             var ii = 1;
             for (; ii < lines.Length; ii++)
             {
-                if (lines[ii] == "---")
+                if (lines[ii].Substring(0, 3) == "---")
                 {
                     break;
                 }

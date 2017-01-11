@@ -77,6 +77,8 @@ namespace GitWebApp.Data
             {
                 File.Delete(path);
             }
+
+            await Task.Run(() => { });
         }
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using GitWebApp.Models;
+using Microsoft.Extensions.Logging;
 
 namespace GitWebApp.Data
 {
@@ -11,6 +12,7 @@ namespace GitWebApp.Data
     {
         private readonly FileStore _files;
         private readonly string _basePath;
+        private ILogger _logger; 
 
         public PostRepository(string basePath)
         {
@@ -22,15 +24,23 @@ namespace GitWebApp.Data
         public IEnumerable<Post> GetAll()
         {
             var files = _files.GetFiles("*.md");
+            LogInfo($@"Found {files?.Count()} *.md files.");
             var posts = new List<Post>();
             
             foreach (var  file in files)
             {
+                string msg = string.Empty;
+                LogInfo($@"Processing file: {file}");
                 var content = ReadFile(file);
-                var post = Post.Parse(content);
+                var post = Post.Parse(content, out msg);
                 if (post != null)
                 {
+                    LogInfo($@"File {file} has been parsed successfully");
                     posts.Add(post);
+                }
+                else
+                {
+                    LogInfo($@"Error. File {file} has not been parsed successfully. Message: {msg}");
                 }
             }
 
@@ -39,12 +49,13 @@ namespace GitWebApp.Data
 
         public Post GetPost(string path)
         {
+            string msg = string.Empty;
             var fileName = $@"{_basePath}\{path}.md";
             var content = ReadFile(fileName);
 
             if (content != null)
             {
-                return Post.Parse(content);
+                return Post.Parse(content, out msg);
             }
 
             return null;
@@ -58,6 +69,16 @@ namespace GitWebApp.Data
             }
 
             return null;
+        }
+
+        public void SetLogger(ILogger logger)
+        {
+            _logger = logger;
+        }
+
+        private void LogInfo(string message)
+        {
+            _logger?.LogInformation(message);
         }
     }
 }

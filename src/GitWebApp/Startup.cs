@@ -47,6 +47,7 @@ namespace GitWebApp
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddAzureWebAppDiagnostics();
 
             app.UseApplicationInsightsRequestTelemetry();
 
