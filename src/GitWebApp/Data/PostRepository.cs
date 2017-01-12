@@ -29,13 +29,13 @@ namespace GitWebApp.Data
             
             foreach (var  file in files)
             {
-                string msg = string.Empty;
+                string msg;
                 LogInfo($@"Processing file: {file}");
                 var content = ReadFile(file);
                 var post = Post.Parse(content, out msg);
                 if (post != null)
                 {
-                    LogInfo($@"File {file} has been parsed successfully");
+                    LogInfo($@"File {file} has been parsed successfully with message: {msg}");
                     posts.Add(post);
                 }
                 else

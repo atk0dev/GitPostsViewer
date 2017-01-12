@@ -3,8 +3,16 @@
 }
 
 <div class="row">
+    <div>
         <h3>@Model.Title</h3>
+    </div>
+    <div class="pull-right">
+        @Model.PublishDate
+    </div>
+    <div>
         <div>@Html.Raw(Model.Content)</div>
-        <hr/>
+    </div>
     
+    <hr/>
+
 </div>

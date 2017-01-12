@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GitWebApp.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,12 +26,17 @@ namespace GitWebApp.Controllers
         {
             ViewData["WebRootPath"] = _environment.WebRootPath;
 
+            var fs = new FileStore($@"{_environment.WebRootPath}\posts");
+            var files = fs.GetFiles("*.md");
+            
+            ViewData["FilesAmount"] = files?.Count();
+
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Fill free to contact me.";
 
             return View();
         }
